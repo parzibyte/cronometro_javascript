@@ -51,16 +51,32 @@
 				tiempoInicio = null;
 			let diferenciaTemporal = 0;
 
+			const ocultarElemento = elemento => {
+				elemento.style.display = "none";
+			}
+
+			const mostrarElemento = elemento => {
+				elemento.style.display = "";
+			}
+
 
 			const iniciar = () => {
 				const ahora = new Date();
 				tiempoInicio = new Date(ahora.getTime() - diferenciaTemporal);
 				clearInterval(idInterval);
-				idInterval = setInterval(refrescarTiempo, 50);
+				idInterval = setInterval(refrescarTiempo, 100);
+				ocultarElemento($btnIniciar);
+				ocultarElemento($btnDetener);
+				mostrarElemento($btnMarca);
+				mostrarElemento($btnPausar);
 			};
 			const pausar = () => {
 				diferenciaTemporal = new Date() - tiempoInicio.getTime();
 				clearInterval(idInterval);
+				mostrarElemento($btnIniciar);
+				ocultarElemento($btnMarca);
+				ocultarElemento($btnPausar);
+				mostrarElemento($btnDetener);
 			};
 			const refrescarTiempo = () => {
 				const ahora = new Date();
@@ -80,7 +96,13 @@
 					$contenedorMarcas.append($li);
 				}
 			};
-			dibujarMarcas();
+
+			const detener = () => {
+
+			}
+			ocultarElemento($btnPausar);
+			ocultarElemento($btnMarca);
+			ocultarElemento($btnDetener);
 			$btnIniciar.onclick = iniciar;
 			$btnMarca.onclick = ponerMarca;
 			$btnPausar.onclick = pausar;
