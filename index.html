@@ -59,6 +59,21 @@
 				elemento.style.display = "";
 			}
 
+			const agregarCeroSiEsNecesario = valor => {
+				if (valor < 10) {
+					return "0" + valor;
+				} else {
+					return "" + valor;
+				}
+			}
+
+			const milisegundosAMinutosYSegundos = (milisegundos) => {
+				const minutos = parseInt(milisegundos / 1000 / 60);
+				milisegundos -= minutos * 60 * 1000;
+				segundos = (milisegundos / 1000);
+				return `${agregarCeroSiEsNecesario(minutos)}:${agregarCeroSiEsNecesario(segundos.toFixed(1))}`;
+			};
+
 
 			const iniciar = () => {
 				const ahora = new Date();
@@ -81,7 +96,7 @@
 			const refrescarTiempo = () => {
 				const ahora = new Date();
 				const diferencia = ahora.getTime() - tiempoInicio.getTime();
-				$tiempoTranscurrido.textContent = diferencia;
+				$tiempoTranscurrido.textContent = milisegundosAMinutosYSegundos(diferencia);
 			};
 			const ponerMarca = () => {
 				marcas.unshift(new Date() - tiempoInicio.getTime());
@@ -91,7 +106,7 @@
 				$contenedorMarcas.innerHTML = "";
 				for (const [indice, marca] of marcas.entries()) {
 					const $li = document.createElement("p");
-					$li.textContent = `${marcas.length - indice}. ${marca}`;
+					$li.textContent = `${marcas.length - indice}. ${milisegundosAMinutosYSegundos(marca)}`;
 					$li.classList.add("is-size-3");
 					$contenedorMarcas.append($li);
 				}
