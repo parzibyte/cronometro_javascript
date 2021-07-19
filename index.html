@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Cronómetro con JavaScript - By Parzibyte</title>
+	<link rel="stylesheet" href="https://unpkg.com/bulma">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@5.9.55/css/materialdesignicons.min.css">
+	<style>
+		.mdi {
+			font-size: 3rem;
+		}
+
+		#tiempoTranscurrido {
+			font-size: 4rem;
+		}
+
+		ol.marcas>li {
+			font-size: 3rem;
+		}
+	</style>
+</head>
+
+
+<body>
+	<section class="section">
+		<div class="columns">
+			<div class="column has-text-centered">
+				<h2 id="tiempoTranscurrido">00:00</h2>
+				<button class="button is-success is-large" id="btnIniciar"><span class="mdi mdi-play"></span></button>
+				<button class="button is-success is-large" id="btnPausar"><span class="mdi mdi-pause"></span></button>
+				<button class="button is-primary is-large" id="btnMarca"><span class="mdi mdi-flag"></span></button>
+				<button class="button is-warning is-large" id="btnDetener"><span class="mdi mdi-stop"></span></button>
+				<div id="contenedorMarcas">
+				</div>
+			</div>
+		</div>
+	</section>
+	<script>
+		document.addEventListener("DOMContentLoaded", () => {
+			const $tiempoTranscurrido = document.querySelector("#tiempoTranscurrido"),
+				$btnIniciar = document.querySelector("#btnIniciar"),
+				$btnPausar = document.querySelector("#btnPausar"),
+				$btnMarca = document.querySelector("#btnMarca"),
+				$btnDetener = document.querySelector("#btnDetener"),
+				$contenedorMarcas = document.querySelector("#contenedorMarcas");
+			let marcas = [],
+				idInterval,
+				tiempoInicio = null;
+			let diferenciaTemporal = 0;
+
+
+			const iniciar = () => {
+				const ahora = new Date();
+				tiempoInicio = new Date(ahora.getTime() - diferenciaTemporal);
+				clearInterval(idInterval);
+				idInterval = setInterval(refrescarTiempo, 50);
+			};
+			const pausar = () => {
+				diferenciaTemporal = new Date() - tiempoInicio.getTime();
+				clearInterval(idInterval);
+			};
+			const refrescarTiempo = () => {
+				const ahora = new Date();
+				const diferencia = ahora.getTime() - tiempoInicio.getTime();
+				$tiempoTranscurrido.textContent = diferencia;
+			};
+			const ponerMarca = () => {
+				marcas.unshift(new Date() - tiempoInicio.getTime());
+				dibujarMarcas();
+			};
+			const dibujarMarcas = () => {
+				$contenedorMarcas.innerHTML = "";
+				for (const [indice, marca] of marcas.entries()) {
+					const $li = document.createElement("p");
+					$li.textContent = `${marcas.length - indice}. ${marca}`;
+					$li.classList.add("is-size-3");
+					$contenedorMarcas.append($li);
+				}
+			};
+			dibujarMarcas();
+			$btnIniciar.onclick = iniciar;
+			$btnMarca.onclick = ponerMarca;
+			$btnPausar.onclick = pausar;
+		});
+	</script>
+</body>
+
+</html>
