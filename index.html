@@ -28,7 +28,7 @@
 	<section class="section">
 		<div class="columns">
 			<div class="column has-text-centered">
-				<h2 id="tiempoTranscurrido">00:00</h2>
+				<h2 id="tiempoTranscurrido"></h2>
 				<button class="button is-success is-large" id="btnIniciar"><span class="mdi mdi-play"></span></button>
 				<button class="button is-success is-large" id="btnPausar"><span class="mdi mdi-pause"></span></button>
 				<button class="button is-primary is-large" id="btnMarca"><span class="mdi mdi-flag"></span></button>
@@ -98,14 +98,28 @@
 			};
 
 			const detener = () => {
-
+				if (!confirm("¿Detener?")) {
+					return;
+				}
+				clearInterval(idInterval);
+				init();
+				marcas = [];
+				dibujarMarcas();
+				diferenciaTemporal = 0;
 			}
-			ocultarElemento($btnPausar);
-			ocultarElemento($btnMarca);
-			ocultarElemento($btnDetener);
+
+			const init = () => {
+				$tiempoTranscurrido.textContent = "00:00";
+				ocultarElemento($btnPausar);
+				ocultarElemento($btnMarca);
+				ocultarElemento($btnDetener);
+			};
+			init();
+
 			$btnIniciar.onclick = iniciar;
 			$btnMarca.onclick = ponerMarca;
 			$btnPausar.onclick = pausar;
+			$btnDetener.onclick = detener;
 		});
 	</script>
 </body>
