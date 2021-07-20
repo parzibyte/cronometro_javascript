@@ -64,10 +64,10 @@ document.addEventListener("DOMContentLoaded", () => {
 	const dibujarMarcas = () => {
 		$contenedorMarcas.innerHTML = "";
 		for (const [indice, marca] of marcas.entries()) {
-			const $li = document.createElement("p");
-			$li.innerHTML = `<strong class="is-size-4">${marcas.length - indice}.</strong> ${milisegundosAMinutosYSegundos(marca)}`;
-			$li.classList.add("is-size-3");
-			$contenedorMarcas.append($li);
+			const $p = document.createElement("p");
+			$p.innerHTML = `<strong class="is-size-4">${marcas.length - indice}.</strong> ${milisegundosAMinutosYSegundos(marca)}`;
+			$p.classList.add("is-size-3");
+			$contenedorMarcas.append($p);
 		}
 	};
 
